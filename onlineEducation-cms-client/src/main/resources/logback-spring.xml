@@ -1,0 +1,143 @@
+<configuration debug="false" scan="true" scanPeriod="10 seconds">
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+    <!--<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>-->
+
+    <contextName>logback</contextName>
+
+    <!--在没有定义${LOG_HOME}系统变量的时候，可以设置此本地变量。提交测试、上线时，要将其注释掉，使用系统变量。 -->
+    <!-- <property name="LOG_HOME" value="D:/data/logs" /> -->
+    <!-- 应用名称：和统一配置中的项目代码保持一致（小写） -->
+    <property name="APP_NAME" value="/onlineEducation-cms-client/logs" />
+    <!--日志文件保留天数 -->
+    <property name="LOG_MAX_HISTORY" value="180" />
+    <property name="MAX_FILE_SIZE" value="50MB"/>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+    <!--应用日志文件保存路径 -->
+    <property name="LOG_APP_HOME" value="${APP_NAME}" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="debug_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_APP_HOME}/logback_debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_APP_HOME}/logback_debug.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+            <!--            <onMatch>ACCEPT</onMatch>-->
+            <!--            <onMismatch>DENY</onMismatch>-->
+        </filter>
+    </appender>
+
+    <appender name="info_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_APP_HOME}/logback_info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_APP_HOME}/logback_info.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="warn_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_APP_HOME}/logback_warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_APP_HOME}/logback_warn.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+    <appender name="error_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_APP_HOME}/logback_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_APP_HOME}/logback_error.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--=============================== 日志输出: 默认主业务日志 ====================================== -->
+    <logger name="org.springframework">
+        <level value="WARN" />
+    </logger>
+    <logger name="org.apache.shiro">
+        <level value="WARN" />
+    </logger>
+    <logger name="freemarker">
+        <level value="WARN" />
+    </logger>
+    <logger name="org.hibernate">
+        <level value="WARN" />
+    </logger>
+    <logger name="org.hibernate.SQL">
+        <level value="DEBUG" />
+    </logger>
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="debug_file"/>
+        <appender-ref ref="info_file"/>
+        <appender-ref ref="warn_file"/>
+        <appender-ref ref="error_file"/>
+    </root>
+
+</configuration>
